@@ -1,7 +1,6 @@
 package davi_portifolio.entity;
 
 import jakarta.persistence.*;
-import java.util.Objects;
 
 @Entity
 @Table(name = "users")
@@ -22,13 +21,18 @@ public class User {
     private String username;
 
     @Column(name = "user_phone", nullable = true, updatable = true, unique = true)
-    private long phone;
+    private Long phone;
 
 
     public User() {
     }
 
-    public User(Long id, String email, String hashedPassword, String name, long phone) {
+    public User(Long id, String email, String hashedPassword, String username, long phone) {
+        this.id = id;
+        this.email = email;
+        this.hashedPassword = hashedPassword;
+        this.username = username;
+        this.phone = phone;
     }
 
     public Long getId() {
@@ -73,13 +77,14 @@ public class User {
 
     @Override
     public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) return true;
+        if (!(o instanceof User)) return false;
         User user = (User) o;
-        return phone == user.phone && Objects.equals(id, user.id) && Objects.equals(email, user.email) && Objects.equals(hashedPassword, user.hashedPassword) && Objects.equals(username, user.username);
+        return id != null && id.equals(user.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, email, hashedPassword, username, phone);
+        return getClass().hashCode();
     }
 }
