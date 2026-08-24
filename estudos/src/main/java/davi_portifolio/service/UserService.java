@@ -15,16 +15,22 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public User buscarPorId(Long id) {
-        User user = userRepository.getById(id);
+    public User findById(Long id) {
+        User user = userRepository.findById(id).get();
         return user;
     }
 
-    public User buscarPorEmail(String email) {return null;}
+    public User buscarPorEmail(String email) {
+        User user = userRepository.findByEmail(email);
+        return user;
+    }
 
-    public User buscarPorNome(String nome) {return null;}
+    public User findByUsername(String username) {
+        User user = userRepository.findByUsername(username);
+        return user;
+    }
 
-    public User criarUser(UserCreateRequest request){
+    public User createUser(UserCreateRequest request){
         User novoUser = new User();
         novoUser.setUsername(request.username());
         novoUser.setEmail(request.email());

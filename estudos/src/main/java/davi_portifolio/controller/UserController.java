@@ -16,14 +16,14 @@ public class UserController {
 
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserDTO> buscarPerfilId(@PathVariable Long id) {
-        User user = userService.buscarPorId(id);
+    public ResponseEntity<UserDTO> findUserById(@PathVariable Long id) {
+        User user = userService.findById(id);
         return ResponseEntity.status(HttpStatus.OK).body(userService.toDTO(user));
     }
 
     @PostMapping
-    public ResponseEntity<UserDTO> criarUser(@RequestBody UserCreateRequest request) {
-        User novoUsuario = userService.criarUser(request);
+    public ResponseEntity<UserDTO> createUser(@RequestBody UserCreateRequest request) {
+        User novoUsuario = userService.createUser(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.toDTO(novoUsuario));
     }
 
