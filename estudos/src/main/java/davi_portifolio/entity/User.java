@@ -1,6 +1,9 @@
 package davi_portifolio.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+
+import java.util.Date;
 
 @Entity
 @Table(name = "users")
@@ -20,19 +23,24 @@ public class User {
     @Column(name = "user_username", nullable = false, updatable = true, unique = true)
     private String username;
 
-    @Column(name = "user_phone", nullable = true, updatable = true, unique = true)
-    private Long phone;
+    @Column(name = "created_at", nullable = false, updatable = false, unique = false)
+    private Date created_at;
+
+    @Column(name = "updated_at", nullable = true, updatable = true, unique = false)
+    private Date updated_at;
+
+
 
 
     public User() {
     }
 
-    public User(Long id, String email, String hashedPassword, String username, long phone) {
-        this.id = id;
+    public User(Long id, String email, String hashedPassword, String username, Date created_at,Date updated_at) {
         this.email = email;
         this.hashedPassword = hashedPassword;
         this.username = username;
-        this.phone = phone;
+        this.created_at = created_at;
+        this.updated_at = updated_at;
     }
 
     public Long getId() {
@@ -67,12 +75,20 @@ public class User {
         this.username = username;
     }
 
-    public long getPhone() {
-        return phone;
+    public Date getCreated_at() {
+        return created_at;
     }
 
-    public void setPhone(long phone) {
-        this.phone = phone;
+    public void setCreated_at(Date created_at) {
+        this.created_at = created_at;
+    }
+
+    public Date getUpdated_at() {
+        return updated_at;
+    }
+
+    public void setUpdated_at(Date updated_at) {
+        this.updated_at = updated_at;
     }
 
     @Override

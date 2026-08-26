@@ -1,10 +1,13 @@
 package davi_portifolio.service;
 
 import davi_portifolio.DTO.request.UserCreateRequest;
+import davi_portifolio.DTO.request.UserRequest;
 import davi_portifolio.DTO.response.UserDTO;
 import davi_portifolio.entity.User;
 import davi_portifolio.repository.UserRepository;
 import org.springframework.stereotype.Service;
+
+import java.util.Date;
 
 @Service
 public class UserService {
@@ -37,6 +40,25 @@ public class UserService {
         novoUser.setHashedPassword(request.hashedPassword());
         userRepository.save(novoUser);
         return novoUser;
+    }
+
+    public User updateUser(Long id, UserRequest request){
+        User antigoUser = userRepository.findById(id).get();
+        User updatedUser = new User(
+                antigoUser.getId(),
+                antigoUser.getEmail(),
+                antigoUser.getHashedPassword(),
+                antigoUser.getUsername(),
+                antigoUser.getCreated_at(),
+                new Date()
+        );
+        userRepository.save(updatedUser);
+        return updatedUser;
+    }
+
+    public boolean deleteUser(Long id){
+        userRepository.deleteById(id);
+        return true;
     }
 
     public UserDTO toDTO(User novoUser){
