@@ -1,0 +1,6 @@
+package davi_portifolio.entity;
+
+public enum Role {
+    ROLE_USER,
+    ROLE_ADMIN
+}

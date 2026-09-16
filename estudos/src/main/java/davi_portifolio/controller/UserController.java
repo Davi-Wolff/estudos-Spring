@@ -39,7 +39,7 @@ public class UserController {
     @DeleteMapping("/{id}")
     public ResponseEntity<UserDTO> deleteUser(@Valid @PathVariable Long id) {
         boolean deuCerto = userService.deleteUser(id);
-        if(deuCerto) {
+        if(deuCerto==true) {
             return ResponseEntity.status(HttpStatus.OK).build();
         }else  {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();

@@ -1,13 +1,17 @@
 package davi_portifolio.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
-public class User {
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,8 +21,8 @@ public class User {
     @Column(name = "user_email", nullable = false, updatable = true)
     private String email;
 
-    @Column(name = "user_hashedPassword", nullable = false, updatable = true, unique = false)
-    private String hashedPassword;
+    @Column(name = "user_password", nullable = false, updatable = true, unique = false)
+    private String password;
 
     @Column(name = "user_username", nullable = false, updatable = true, unique = true)
     private String username;
@@ -29,15 +33,19 @@ public class User {
     @Column(name = "updated_at", nullable = true, updatable = true, unique = false)
     private Date updated_at;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "user_role", nullable = false)
+    private Role role;
+
 
 
 
     public User() {
     }
 
-    public User(Long id, String email, String hashedPassword, String username, Date created_at,Date updated_at) {
+    public User(Long id, String email, String password, String username, Date created_at, Date updated_at) {
         this.email = email;
-        this.hashedPassword = hashedPassword;
+        this.password = password;
         this.username = username;
         this.created_at = created_at;
         this.updated_at = updated_at;
@@ -59,16 +67,9 @@ public class User {
         this.email = email;
     }
 
-    public String getHashedPassword() {
-        return hashedPassword;
-    }
 
-    public void setHashedPassword(String hashedPassword) {
-        this.hashedPassword = hashedPassword;
-    }
-
-    public String getUsername() {
-        return username;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public void setUsername(String username) {
@@ -103,4 +104,27 @@ public class User {
     public int hashCode() {
         return getClass().hashCode();
     }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority("ROLE_" + this.role));
+    }
+
+    @Override
+    public String getPassword() { return this.password; }
+
+    @Override
+    public String getUsername() { return this.username; }
+
+    @Override
+    public boolean isAccountNonExpired() { return true; }
+
+    @Override
+    public boolean isAccountNonLocked() { return true; }
+
+    @Override
+    public boolean isCredentialsNonExpired() { return true; }
+
+    @Override
+    public boolean isEnabled() { return true; }
 }

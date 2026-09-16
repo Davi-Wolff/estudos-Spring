@@ -37,7 +37,7 @@ public class UserService {
         User novoUser = new User();
         novoUser.setUsername(request.username());
         novoUser.setEmail(request.email());
-        novoUser.setHashedPassword(request.hashedPassword());
+        novoUser.setPassword(request.hashedPassword());
         userRepository.save(novoUser);
         return novoUser;
     }
@@ -47,7 +47,7 @@ public class UserService {
         User updatedUser = new User(
                 antigoUser.getId(),
                 antigoUser.getEmail(),
-                antigoUser.getHashedPassword(),
+                antigoUser.getPassword(),
                 antigoUser.getUsername(),
                 antigoUser.getCreated_at(),
                 new Date()
