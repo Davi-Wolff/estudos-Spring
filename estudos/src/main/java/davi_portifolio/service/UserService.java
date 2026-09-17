@@ -5,6 +5,7 @@ import davi_portifolio.DTO.request.UserRequest;
 import davi_portifolio.DTO.response.UserDTO;
 import davi_portifolio.entity.User;
 import davi_portifolio.repository.UserRepository;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -23,13 +24,13 @@ public class UserService {
         return user;
     }
 
-    public User buscarPorEmail(String email) {
-        User user = userRepository.findByEmail(email);
+    public User buscarPorEmail(String email) throws UsernameNotFoundException {
+        User user = userRepository.findByEmail(email).orElseThrow(()->new UsernameNotFoundException("Usuário não encontrado"));
         return user;
     }
 
-    public User findByUsername(String username) {
-        User user = userRepository.findByUsername(username);
+    public User findByUsername(String username) throws UsernameNotFoundException{
+        User user = userRepository.findByUsername(username).orElseThrow(()->new UsernameNotFoundException("Usuário não encontrado"));
         return user;
     }
 
