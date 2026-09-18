@@ -24,6 +24,18 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(userService.toDTO(user));
     }
 
+    @GetMapping("/{username}")
+    public ResponseEntity<UserDTO> findUserByUsername(@PathVariable String username){
+        User user = userService.findByUsername(username);
+        return ResponseEntity.status(HttpStatus.OK).body(userService.toDTO(user));
+    }
+
+    @GetMapping("/{email}")
+    public ResponseEntity<UserDTO> findUserByEmail(@PathVariable String email){
+        User user = userService.findByEmail(email);
+        return ResponseEntity.status(HttpStatus.OK).body(userService.toDTO(user));
+    }
+
     @PostMapping
     public ResponseEntity<UserDTO> createUser(@Valid @RequestBody UserCreateRequest request) {
         User novoUsuario = userService.createUser(request);
@@ -39,7 +51,7 @@ public class UserController {
     @DeleteMapping("/{id}")
     public ResponseEntity<UserDTO> deleteUser(@Valid @PathVariable Long id) {
         boolean deuCerto = userService.deleteUser(id);
-        if(deuCerto==true) {
+        if(deuCerto) {
             return ResponseEntity.status(HttpStatus.OK).build();
         }else  {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();

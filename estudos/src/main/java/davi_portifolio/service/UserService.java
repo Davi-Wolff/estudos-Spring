@@ -13,25 +13,23 @@ import java.util.Date;
 @Service
 public class UserService {
 
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
     public User findById(Long id) {
-        User user = userRepository.findById(id).get();
-        return user;
+        return userRepository.findById(id).orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 
-    public User buscarPorEmail(String email) throws UsernameNotFoundException {
-        User user = userRepository.findByEmail(email).orElseThrow(()->new UsernameNotFoundException("Usuário não encontrado"));
-        return user;
+    public User findByEmail(String email) throws UsernameNotFoundException {
+        return userRepository.findByEmail(email).orElseThrow(()->new UsernameNotFoundException("Usuário não encontrado"));
+
     }
 
     public User findByUsername(String username) throws UsernameNotFoundException{
-        User user = userRepository.findByUsername(username).orElseThrow(()->new UsernameNotFoundException("Usuário não encontrado"));
-        return user;
+        return userRepository.findByUsername(username).orElseThrow(()->new UsernameNotFoundException("Usuário não encontrado"));
     }
 
     public User createUser(UserCreateRequest request){
@@ -43,8 +41,10 @@ public class UserService {
         return novoUser;
     }
 
-    public User updateUser(Long id, UserRequest request){
-        User antigoUser = userRepository.findById(id).get();
+    //ajustar update segunda
+
+    public User updateUser(Long id, UserRequest request) throws UsernameNotFoundException {
+        User antigoUser = userRepository.findById(id).orElseThrow(()->new UsernameNotFoundException("Usuário não encontrado"));
         User updatedUser = new User(
                 antigoUser.getId(),
                 antigoUser.getEmail(),
