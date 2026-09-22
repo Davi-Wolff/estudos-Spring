@@ -18,13 +18,13 @@ public class UserController {
 
 //Fazer um CRUD de User pra pegar o jeito primeiro
 
-    @GetMapping("/{id}")
+    @GetMapping("/user/{id}")
     public ResponseEntity<UserDTO> findUserById(@PathVariable Long id) {
         User user = userService.findById(id);
         return ResponseEntity.status(HttpStatus.OK).body(userService.toDTO(user));
     }
 
-    @GetMapping("/{username}")
+    @GetMapping("/user/username")
     public ResponseEntity<UserDTO> findUserByUsername(@PathVariable String username){
         User user = userService.findByUsername(username);
         return ResponseEntity.status(HttpStatus.OK).body(userService.toDTO(user));
