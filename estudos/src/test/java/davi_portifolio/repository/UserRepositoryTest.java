@@ -5,8 +5,8 @@ import davi_portifolio.entity.User;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
+import org.springframework.boot.jdbc.test.autoconfigure.AutoConfigureTestDatabase;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
@@ -55,7 +55,7 @@ class UserRepositoryTest {
         user.setEmail(email);
         user.setPassword("hash123");
         user.setCreated_at(new Date());
-        user.setRole(Role.USER); // ver aviso na descrição da classe
+        user.setRole(Role.ROLE_USER); // ver aviso na descrição da classe
         return user;
     }
 

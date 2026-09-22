@@ -1,18 +1,18 @@
 package davi_portifolio.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import davi_portifolio.dto.UserCreateRequest;
-import davi_portifolio.dto.UserDTO;
-import davi_portifolio.dto.UserRequest;
+import davi_portifolio.DTO.request.UserCreateRequest;
+import davi_portifolio.DTO.response.UserDTO;
+import davi_portifolio.DTO.request.UserRequest;
+import davi_portifolio.entity.Role;
 import davi_portifolio.entity.User;
 import davi_portifolio.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Date;
@@ -41,7 +41,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * IllegalStateException. Corrija os paths (ex: /id/{id}, /username/{username},
  * /email/{email}) antes de rodar os testes abaixo.
  */
-@WebMvcTest(UserController.class)
+@org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest(UserController.class)
 class UserControllerTest {
 
     private static final String BASE_URL = "/users";
@@ -52,11 +52,11 @@ class UserControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
 
-    @MockBean
+    @MockitoBean
     private UserService userService;
 
     private User criarUsuarioFake() {
-        User user = new User(1L, "davi@email.com", "hash123", "davi", new Date(), null);
+        User user = new User(1L, "davi@email.com", "hash123", "davi", new Date(), null, Role.ROLE_USER);
         user.setId(1L);
         return user;
     }

@@ -1,6 +1,8 @@
 package davi_portifolio.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,6 +13,8 @@ import java.util.List;
 
 @Entity
 @Table(name = "users")
+@AllArgsConstructor
+@NoArgsConstructor
 public class User implements UserDetails {
 
     @Id
@@ -37,19 +41,6 @@ public class User implements UserDetails {
     @Column(name = "user_role", nullable = false)
     private Role role;
 
-
-
-
-    public User() {
-    }
-
-    public User(Long id, String email, String password, String username, Date created_at, Date updated_at) {
-        this.email = email;
-        this.password = password;
-        this.username = username;
-        this.created_at = created_at;
-        this.updated_at = updated_at;
-    }
 
     public Long getId() {
         return id;
@@ -89,6 +80,14 @@ public class User implements UserDetails {
 
     public void setUpdated_at(Date updated_at) {
         this.updated_at = updated_at;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     @Override

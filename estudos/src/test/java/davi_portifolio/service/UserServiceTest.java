@@ -1,8 +1,9 @@
 package davi_portifolio.service;
 
-import davi_portifolio.dto.UserCreateRequest;
-import davi_portifolio.dto.UserDTO;
-import davi_portifolio.dto.UserRequest;
+import davi_portifolio.DTO.request.UserCreateRequest;
+import davi_portifolio.DTO.response.UserDTO;
+import davi_portifolio.DTO.request.UserRequest;
+import davi_portifolio.entity.Role;
 import davi_portifolio.entity.User;
 import davi_portifolio.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -45,7 +46,7 @@ class UserServiceTest {
     }
 
     private User criarUsuario(Long id, String email, String password, String username) {
-        User user = new User(id, email, password, username, new Date(), null);
+        User user = new User(id, email, password, username, new Date(), null, Role.ROLE_USER);
         user.setId(id); // necessário: o construtor de User não seta o id
         return user;
     }
