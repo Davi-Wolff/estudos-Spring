@@ -5,11 +5,21 @@ import davi_portifolio.DTO.request.UserRequest;
 import davi_portifolio.DTO.response.UserDTO;
 import davi_portifolio.entity.User;
 import davi_portifolio.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
+@Tag(name = "User", description = "Controller for the user")
 @RestController
 @RequestMapping("/user")
 public class UserController {
@@ -18,37 +28,97 @@ public class UserController {
 
 //Fazer um CRUD de User pra pegar o jeito primeiro
 
+    @Operation(summary = "Get user by Id", description = "User must exist")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "OK",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = UserDTO.class))),
+            @ApiResponse(responseCode = "400", description = "Invalid Id supplied"),
+            @ApiResponse(responseCode = "404", description = "User not found"),
+            @ApiResponse(responseCode = "500", description = "Internal server error",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
+    })
     @GetMapping("/user/{id}")
     public ResponseEntity<UserDTO> findUserById(@PathVariable Long id) {
         User user = userService.findById(id);
         return ResponseEntity.status(HttpStatus.OK).body(userService.toDTO(user));
     }
 
-    @GetMapping("/user/username")
+    @Operation(summary = "Get user by username", description = "User must exist")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "OK",
+                    content = {@Content(mediaType = "application/json", schema = @Schema(implementation = UserDTO.class))}),
+            @ApiResponse(responseCode = "400", description = "Invalid ID supplied"),
+            @ApiResponse(responseCode = "404", description = "User not found"),
+            @ApiResponse(responseCode = "500", description = "Internal server error",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
+    })
+    @GetMapping("/user/{username}")
     public ResponseEntity<UserDTO> findUserByUsername(@PathVariable String username){
         User user = userService.findByUsername(username);
         return ResponseEntity.status(HttpStatus.OK).body(userService.toDTO(user));
     }
 
-    @GetMapping("/{email}")
+    @Operation(summary = "Get all users")
+    @GetMapping("/users")
+    public ResponseEntity<List<UserDTO>> findAllUsers(){
+        List<UserDTO> users = userService.findAllUsers();
+        return ResponseEntity.status(HttpStatus.OK).body(toDTO.users);
+    }
+
+    @Operation(summary = "Get user by email", description = "User must exist")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "OK",
+                    content = {@Content(mediaType = "application/json", schema = @Schema(implementation = UserDTO.class))}),
+            @ApiResponse(responseCode = "400", description = "Invalid ID supplied"),
+            @ApiResponse(responseCode = "404", description = "User not found"),
+            @ApiResponse(responseCode = "500", description = "Internal server error",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
+    })
+    @GetMapping("/user/get/{email}")
     public ResponseEntity<UserDTO> findUserByEmail(@PathVariable String email){
         User user = userService.findByEmail(email);
         return ResponseEntity.status(HttpStatus.OK).body(userService.toDTO(user));
     }
 
+    @Operation(summary = "Create a new user")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "CREATED",
+                    content = {@Content(mediaType = "application/json", schema = @Schema(implementation = UserDTO.class))} ),
+            @ApiResponse(responseCode = "400", description = "Invalid ID supplied"),
+            @ApiResponse(responseCode = "404", description = "User not found"),
+            @ApiResponse(responseCode = "500", description = "Internal server error",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
+    })
     @PostMapping
     public ResponseEntity<UserDTO> createUser(@Valid @RequestBody UserCreateRequest request) {
         User novoUsuario = userService.createUser(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.toDTO(novoUsuario));
     }
 
-    @PutMapping("/{id}")
+    @Operation(summary = "Udate a user", description = "User must exist")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "OK",
+                    content = {@Content(mediaType = "application/json", schema = @Schema(implementation = UserDTO.class))}),
+            @ApiResponse(responseCode = "400", description = "Invalid ID supplied"),
+            @ApiResponse(responseCode = "404", description = "User not found"),
+            @ApiResponse(responseCode = "500", description = "Internal server error",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
+    })
+    @PutMapping("/user/update/{id}")
     public ResponseEntity<UserDTO> updateUser(@Valid @RequestBody UserRequest request, @PathVariable Long id) {
         User updatedUser = userService.updateUser(id,request);
         return ResponseEntity.status(HttpStatus.OK).body(userService.toDTO(updatedUser));
     }
 
-    @DeleteMapping("/{id}")
+    @Operation(summary = "Delete a user", description = "User must exist")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200"),
+            @ApiResponse(responseCode = "400", description = "Invalid ID supplied"),
+            @ApiResponse(responseCode = "404", description = "User not found"),
+            @ApiResponse(responseCode = "500", description = "Internal server error",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
+    })
+    @DeleteMapping("/user/delete/{id}")
     public ResponseEntity<UserDTO> deleteUser(@Valid @PathVariable Long id) {
         boolean deuCerto = userService.deleteUser(id);
         if(deuCerto) {
