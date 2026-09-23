@@ -3,12 +3,14 @@ package davi_portifolio.service;
 import davi_portifolio.DTO.request.UserCreateRequest;
 import davi_portifolio.DTO.request.UserRequest;
 import davi_portifolio.DTO.response.UserDTO;
+import davi_portifolio.entity.Role;
 import davi_portifolio.entity.User;
 import davi_portifolio.repository.UserRepository;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class UserService {
@@ -19,7 +21,14 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public User findById(Long id) {
+    public List<UserDTO> findAllUsers() {
+        return userRepository.findAll()
+                .stream()
+                .map(this::toDTO)
+                .toList();
+    }
+
+    public User findById(Long id) throws UsernameNotFoundException{
         return userRepository.findById(id).orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 
@@ -37,24 +46,21 @@ public class UserService {
         novoUser.setUsername(request.username());
         novoUser.setEmail(request.email());
         novoUser.setPassword(request.hashedPassword());
+        novoUser.setRole(Role.ROLE_USER);
         userRepository.save(novoUser);
         return novoUser;
     }
 
-    //ajustar update segunda
+    public User updateUser(Long id, UserRequest request) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado"));
 
-    public User updateUser(Long id, UserRequest request) throws UsernameNotFoundException {
-        User antigoUser = userRepository.findById(id).orElseThrow(()->new UsernameNotFoundException("Usuário não encontrado"));
-        User updatedUser = new User(
-                antigoUser.getId(),
-                antigoUser.getEmail(),
-                antigoUser.getPassword(),
-                antigoUser.getUsername(),
-                antigoUser.getCreated_at(),
-                new Date()
-        );
-        userRepository.save(updatedUser);
-        return updatedUser;
+        user.setUsername(request.username());
+        user.setEmail(request.email());
+        user.setPassword(request.password());
+        user.setUpdated_at(new Date());
+
+        return userRepository.save(user);
     }
 
     public boolean deleteUser(Long id){
@@ -62,9 +68,7 @@ public class UserService {
         return true;
     }
 
-    public UserDTO toDTO(User novoUser){
-        return new UserDTO(novoUser.getId(),novoUser.getUsername(),novoUser.getEmail());
+    public UserDTO toDTO(User user) {
+        return new UserDTO(user.getId(), user.getUsername(), user.getEmail());
     }
-
-    //fzr exceptions para case de errado e ajustar o controller caso a busca dê errado
 }

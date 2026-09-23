@@ -123,7 +123,7 @@ class UserControllerTest {
     @Test
     @WithMockUser
     void updateUser_deveRetornar200ComUsuarioAtualizado() throws Exception {
-        UserRequest request = new UserRequest("novoNome", "novo@email.com");
+        UserRequest request = new UserRequest("novoNome", "novo@email.com", "hash123");
         User userAtualizado = criarUsuarioFake();
         UserDTO dto = new UserDTO(1L, "davi", "davi@email.com");
 

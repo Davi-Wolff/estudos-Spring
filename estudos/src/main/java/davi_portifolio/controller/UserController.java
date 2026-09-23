@@ -26,8 +26,6 @@ public class UserController {
 
     private UserService userService;
 
-//Fazer um CRUD de User pra pegar o jeito primeiro
-
     @Operation(summary = "Get user by Id", description = "User must exist")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK",
@@ -58,11 +56,12 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(userService.toDTO(user));
     }
 
+    //AJUSTAR O FINDALL E O SERVICE
     @Operation(summary = "Get all users")
     @GetMapping("/users")
-    public ResponseEntity<List<UserDTO>> findAllUsers(){
+    public ResponseEntity<List<UserDTO>> findAllUsers() {
         List<UserDTO> users = userService.findAllUsers();
-        return ResponseEntity.status(HttpStatus.OK).body(toDTO.users);
+        return ResponseEntity.status(HttpStatus.OK).body(users);
     }
 
     @Operation(summary = "Get user by email", description = "User must exist")

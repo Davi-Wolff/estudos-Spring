@@ -3,15 +3,12 @@ package davi_portifolio.DTO.request;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@AllArgsConstructor
-public class UserRequest {
-
-    @NotBlank(message = "Username é obrigatório")
-    private String username;
-
-    @Email(message = "Email inválido")
-    @NotBlank(message = "Email é obrigatório")
-    private String email;
-
-}
+public record UserRequest(
+        @NotBlank String username,
+        @Email @NotBlank String email,
+        String password
+) {}

@@ -141,7 +141,7 @@ class UserServiceTest {
 
     @Test
     void updateUser_deveLancarExcecao_quandoUsuarioNaoExistir() {
-        UserRequest request = new UserRequest("novoNome", "novo@email.com");
+        UserRequest request = new UserRequest("novoNome", "novo@email.com", "hash123");
         when(userRepository.findById(99L)).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> userService.updateUser(99L, request))
@@ -154,7 +154,7 @@ class UserServiceTest {
     @Test
     void updateUser_comportamentoAtual_mantemDadosAntigosENaoPreservaId() {
         User antigoUser = criarUsuario(1L, "antigo@email.com", "hashAntigo", "antigoNome");
-        UserRequest request = new UserRequest("novoNome", "novo@email.com");
+        UserRequest request = new UserRequest("novoNome", "novo@email.com", "hash123");
         when(userRepository.findById(1L)).thenReturn(Optional.of(antigoUser));
 
         User resultado = userService.updateUser(1L, request);
