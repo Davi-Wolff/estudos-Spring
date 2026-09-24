@@ -1,4 +1,4 @@
-package davi_portifolio.service;
+package davi_portifolio.service.auth;
 
 import davi_portifolio.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
