@@ -1,7 +1,7 @@
 package davi_portifolio.auth;
 
-import davi_portifolio.service.CustomUserDetailsService;
-import davi_portifolio.service.JwtService;
+import davi_portifolio.service.auth.CustomUserDetailsService;
+import davi_portifolio.service.auth.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

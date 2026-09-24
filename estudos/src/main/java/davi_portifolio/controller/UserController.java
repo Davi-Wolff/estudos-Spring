@@ -35,7 +35,7 @@ public class UserController {
             @ApiResponse(responseCode = "500", description = "Internal server error",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
     })
-    @GetMapping("/user/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<UserDTO> findUserById(@PathVariable Long id) {
         User user = userService.findById(id);
         return ResponseEntity.status(HttpStatus.OK).body(userService.toDTO(user));
@@ -50,15 +50,15 @@ public class UserController {
             @ApiResponse(responseCode = "500", description = "Internal server error",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
     })
-    @GetMapping("/user/{username}")
+    @GetMapping("/{username}")
     public ResponseEntity<UserDTO> findUserByUsername(@PathVariable String username){
         User user = userService.findByUsername(username);
         return ResponseEntity.status(HttpStatus.OK).body(userService.toDTO(user));
     }
 
-    //AJUSTAR O FINDALL E O SERVICE
+
     @Operation(summary = "Get all users")
-    @GetMapping("/users")
+    @GetMapping("/findall")
     public ResponseEntity<List<UserDTO>> findAllUsers() {
         List<UserDTO> users = userService.findAllUsers();
         return ResponseEntity.status(HttpStatus.OK).body(users);
@@ -73,7 +73,7 @@ public class UserController {
             @ApiResponse(responseCode = "500", description = "Internal server error",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
     })
-    @GetMapping("/user/get/{email}")
+    @GetMapping("/get/{email}")
     public ResponseEntity<UserDTO> findUserByEmail(@PathVariable String email){
         User user = userService.findByEmail(email);
         return ResponseEntity.status(HttpStatus.OK).body(userService.toDTO(user));
@@ -83,13 +83,15 @@ public class UserController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "CREATED",
                     content = {@Content(mediaType = "application/json", schema = @Schema(implementation = UserDTO.class))} ),
-            @ApiResponse(responseCode = "400", description = "Invalid ID supplied"),
+            @ApiResponse(responseCode = "400", description = "Validation error"),
             @ApiResponse(responseCode = "404", description = "User not found"),
+            @ApiResponse(responseCode = "409", description = "Email or username already in use"),
             @ApiResponse(responseCode = "500", description = "Internal server error",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
     })
     @PostMapping
     public ResponseEntity<UserDTO> createUser(@Valid @RequestBody UserCreateRequest request) {
+        //consertar createUser
         User novoUsuario = userService.createUser(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.toDTO(novoUsuario));
     }
@@ -103,7 +105,7 @@ public class UserController {
             @ApiResponse(responseCode = "500", description = "Internal server error",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
     })
-    @PutMapping("/user/update/{id}")
+    @PutMapping("/update/{id}")
     public ResponseEntity<UserDTO> updateUser(@Valid @RequestBody UserRequest request, @PathVariable Long id) {
         User updatedUser = userService.updateUser(id,request);
         return ResponseEntity.status(HttpStatus.OK).body(userService.toDTO(updatedUser));
@@ -117,7 +119,7 @@ public class UserController {
             @ApiResponse(responseCode = "500", description = "Internal server error",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
     })
-    @DeleteMapping("/user/delete/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<UserDTO> deleteUser(@Valid @PathVariable Long id) {
         boolean deuCerto = userService.deleteUser(id);
         if(deuCerto) {
