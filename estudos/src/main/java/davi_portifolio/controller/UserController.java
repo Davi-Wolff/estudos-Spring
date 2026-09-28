@@ -4,6 +4,8 @@ import davi_portifolio.DTO.request.UserCreateRequest;
 import davi_portifolio.DTO.request.UserRequest;
 import davi_portifolio.DTO.response.UserDTO;
 import davi_portifolio.entity.User;
+import davi_portifolio.exception.custom.EmailAlreadyExistsException;
+import davi_portifolio.exception.custom.UsernameAlreadyExistsException;
 import davi_portifolio.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
